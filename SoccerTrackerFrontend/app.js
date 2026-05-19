@@ -1,3 +1,4 @@
+const API = "https://arise-soccertracker.onrender.com";
 function showPage(pageId, button) {
   const pages = document.querySelectorAll(".page");
   const buttons = document.querySelectorAll(".nav-btn");
