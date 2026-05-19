@@ -1,97 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ARISE Soccer Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+ARISE Soccer Tracker
+</title>
+
+<link
+rel="stylesheet"
+href="style.css"
+/>
+
 </head>
+
 <body>
 
-  <div class="phone">
+<div class="phone">
 
-    <header>
-      <img src="assets/arise-logo.png" class="logo" alt="ARISE Logo" />
-      <h1>Soccer Tracker</h1>
-    </header>
+<header>
 
-    <main>
+<div class="hero">
 
-      <section id="home" class="page active">
-        <div class="panel">
-          <h2>Today’s Focus</h2>
+<img
+src="assets/ARISE-logo.png"
+class="logo"
+alt="ARISE Logo"
+/>
 
-          <div class="card">
-            <h3>Backend Status</h3>
-            <p id="backend-status">Checking connection...</p>
-          </div>
+<h1>
+Soccer Tracker
+</h1>
 
-          <div class="card">
-            <h3>Player Overview</h3>
-            <div id="players-box">
-              <p>Loading players...</p>
-            </div>
-          </div>
+<p>
+Train • Track • Improve
+</p>
 
-          <button onclick="refreshHome()">Refresh Plan</button>
-        </div>
-      </section>
+</div>
 
-      <section id="stats" class="page">
-        <div class="panel">
-          <h2>Player Stats</h2>
-          <div id="stats-box">
-            <p>Click Stats to load data.</p>
-          </div>
-        </div>
-      </section>
+</header>
 
-      <section id="sessions" class="page">
-        <div class="panel">
-          <h2>Sessions</h2>
-          <div id="sessions-box">
-            <p>Click Sessions to load data.</p>
-          </div>
-        </div>
-      </section>
 
-      <section id="profile" class="page">
-        <div class="panel profile">
-          <div class="avatar">⚽</div>
-          <h2>Profile</h2>
+<main>
 
-          <div id="profile-box">
-            <p>Click Profile to load player profile.</p>
-          </div>
-        </div>
-      </section>
+<section
+id="home"
+class="page active"
+>
 
-    </main>
+<div class="panel">
 
-    <nav>
-      <button class="nav-btn active" onclick="showPage('home', this)">
-        🏠
-        <span>Home</span>
-      </button>
+<h2>
+Today’s Focus
+</h2>
 
-      <button class="nav-btn" onclick="showPage('stats', this)">
-        📊
-        <span>Stats</span>
-      </button>
+<div class="card">
 
-      <button class="nav-btn" onclick="showPage('sessions', this)">
-        ⚽
-        <span>Sessions</span>
-      </button>
+<h3>
+Backend Status
+</h3>
 
-      <button class="nav-btn" onclick="showPage('profile', this)">
-        👤
-        <span>Profile</span>
-      </button>
-    </nav>
+<p id="backend-status">
+Connecting...
+</p>
 
-  </div>
+</div>
 
-  <script src="script.js"></script>
+<div class="card">
+
+<h3>
+Player Overview
+</h3>
+
+<div id="players-box">
+
+Loading players...
+
+</div>
+
+</div>
+
+<button
+onclick="refreshHome()"
+>
+
+Refresh Plan
+
+</button>
+
+</div>
+
+</section>
+
+
+<section
+id="stats"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+Player Stats
+</h2>
+
+<div id="stats-box">
+
+Loading stats...
+
+</div>
+
+</div>
+
+</section>
+
+
+<section
+id="sessions"
+class="page"
+>
+
+<div class="panel">
+
+<h2>
+Sessions
+</h2>
+
+<div id="sessions-box">
+
+Loading sessions...
+
+</div>
+
+</div>
+
+</section>
+
+
+<section
+id="profile"
+class="page"
+>
+
+<div class="panel profile">
+
+<div class="avatar">
+
+⚽
+
+</div>
+
+<h2>
+
+Profile
+
+</h2>
+
+<div id="profile-box">
+
+Loading profile...
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<nav>
+
+<button
+class="nav-btn active"
+onclick="showPage('home',this)"
+>
+
+🏠
+
+<span>
+Home
+</span>
+
+</button>
+
+
+<button
+class="nav-btn"
+onclick="showPage('stats',this)"
+>
+
+📊
+
+<span>
+Stats
+</span>
+
+</button>
+
+
+<button
+class="nav-btn"
+onclick="showPage('sessions',this)"
+>
+
+⚽
+
+<span>
+Sessions
+</span>
+
+</button>
+
+
+<button
+class="nav-btn"
+onclick="showPage('profile',this)"
+>
+
+👤
+
+<span>
+Profile
+</span>
+
+</button>
+
+</nav>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
+
 </html>
