@@ -1,1 +1,91 @@
-a
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARISE Soccer Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="phone">
+    <header>
+      <h1 id="page-title">ARISE Soccer Tracker</h1>
+    </header>
+
+    <main>
+      <section id="home" class="page active">
+        <div class="panel">
+          <h2>Today’s Focus</h2>
+          <div class="card">
+            <h3>Ball Control Session</h3>
+            <p>45 mins • Beginner</p>
+            <p>Dribbling, cone touches, first touch, passing accuracy.</p>
+          </div>
+
+          <div class="card">
+            <h3>Next Match</h3>
+            <p>Saturday • 3:00 PM</p>
+            <p>Focus on stamina, positioning, and quick decision making.</p>
+          </div>
+
+          <button>Refresh Plan</button>
+        </div>
+      </section>
+
+      <section id="stats" class="page">
+        <div class="panel">
+          <h2>Player Stats</h2>
+          <div class="card stat"><span>Goals</span><strong>8</strong></div>
+          <div class="card stat"><span>Assists</span><strong>5</strong></div>
+          <div class="card stat"><span>Minutes Played</span><strong>640</strong></div>
+          <div class="card stat"><span>Training Sessions</span><strong>12</strong></div>
+        </div>
+      </section>
+
+      <section id="sessions" class="page">
+        <div class="panel">
+          <h2>Sessions</h2>
+          <div class="card">
+            <h3>Speed & Agility</h3>
+            <p>30 mins • Footwork drills</p>
+          </div>
+
+          <div class="card">
+            <h3>Shooting Practice</h3>
+            <p>40 mins • Finishing and accuracy</p>
+          </div>
+
+          <div class="card">
+            <h3>Match Log</h3>
+            <p>90 mins • 1 goal, 1 assist</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile" class="page">
+        <div class="panel profile">
+          <div class="avatar">⚽</div>
+          <h2>Player Profile</h2>
+
+          <div class="card">
+            <p><strong>Name:</strong> Player Name</p>
+            <p><strong>Position:</strong> Midfielder</p>
+            <p><strong>Level:</strong> Beginner</p>
+            <p><strong>Goal:</strong> Improve stamina and ball control</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav>
+      <button class="nav-btn active" onclick="showPage('home', this)">🏠<span>Home</span></button>
+      <button class="nav-btn" onclick="showPage('stats', this)">📊<span>Stats</span></button>
+      <button class="nav-btn" onclick="showPage('sessions', this)">⚽<span>Sessions</span></button>
+      <button class="nav-btn" onclick="showPage('profile', this)">👤<span>Profile</span></button>
+    </nav>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
