@@ -1,1 +1,156 @@
-a
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+}
+
+.phone {
+  width: 390px;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #005b96, #00a8cc, #ffffff);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 90px;
+}
+
+header {
+  padding: 80px 28px 25px;
+}
+
+h1 {
+  color: white;
+  font-size: 32px;
+  margin: 0;
+  font-weight: 800;
+}
+
+main {
+  padding: 0 25px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.panel {
+  background: #eefafa;
+  border-radius: 30px;
+  padding: 22px;
+  min-height: 560px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.panel h2 {
+  margin-top: 0;
+  color: #111;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.card p {
+  color: #666;
+  margin: 8px 0;
+  line-height: 1.35;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.panel > button {
+  width: 100%;
+  height: 55px;
+  background: #111;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 40px;
+  margin-top: 25px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat span {
+  font-size: 17px;
+}
+
+.stat strong {
+  font-size: 25px;
+  color: #005b96;
+}
+
+.profile {
+  text-align: center;
+}
+
+.avatar {
+  width: 95px;
+  height: 95px;
+  background: #005b96;
+  color: white;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45px;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 390px;
+  height: 82px;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav-btn {
+  background: transparent;
+  color: #1b8f4c;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-btn span {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.nav-btn.active {
+  color: #005b96;
+  background: #e8ddff;
+  padding: 8px 18px;
+  border-radius: 25px;
+}
