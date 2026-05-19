@@ -1,19 +1,23 @@
+/* ---------- GLOBAL ---------- */
+
 *{
+margin:0;
+padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial,sans-serif;
 }
 
 body{
 
-margin:0;
+background:#111;
 
 display:flex;
 
 justify-content:center;
 
-background:#111;
-
 }
+
+/* ---------- APP ---------- */
 
 .phone{
 
@@ -24,19 +28,24 @@ min-height:100vh;
 background:
 linear-gradient(
 180deg,
-#001b3d,
-#0057b8,
-#00aeef,
+#005a93,
+#00a8d8,
 white
 );
 
 padding-bottom:90px;
 
+overflow:hidden;
+
 }
+
+/* ---------- HEADER ---------- */
 
 header{
 
 padding-top:20px;
+
+padding-bottom:10px;
 
 }
 
@@ -48,28 +57,47 @@ flex-direction:column;
 
 align-items:center;
 
+width:100%;
+
 }
+
+/* ---------- LOGO FIX ---------- */
 
 .logo{
 
-width:280px;
+display:block;
 
+/* MAIN FIX */
+width:260px;
+
+height:120px;
+
+/* keeps whole logo visible */
+object-fit:contain;
+
+object-position:center;
+
+/* centers logo */
+margin:auto;
+
+/* removes giant overflow */
 max-width:90%;
 
 filter:
 drop-shadow(
-0 12px 18px
+0 8px 16px
 rgba(
 0,
 0,
 0,
-0.4
+0.35
 )
 );
 
 animation:
 float
 3s
+ease-in-out
 infinite;
 
 }
@@ -83,7 +111,7 @@ translateY(0);
 
 50%{
 transform:
-translateY(-5px);
+translateY(-4px);
 }
 
 100%{
@@ -97,11 +125,11 @@ header h1{
 
 color:white;
 
-font-size:32px;
-
-margin:0;
+font-size:30px;
 
 font-weight:900;
+
+margin-top:6px;
 
 }
 
@@ -109,9 +137,13 @@ header p{
 
 color:white;
 
-margin-top:5px;
+opacity:.9;
+
+font-size:14px;
 
 }
+
+/* ---------- MAIN ---------- */
 
 main{
 
@@ -135,9 +167,9 @@ display:block;
 
 background:#eefafa;
 
-padding:22px;
+border-radius:30px;
 
-border-radius:28px;
+padding:22px;
 
 min-height:520px;
 
@@ -152,6 +184,8 @@ rgba(
 
 }
 
+/* ---------- CARDS ---------- */
+
 .card{
 
 background:white;
@@ -162,21 +196,40 @@ border-radius:18px;
 
 margin-bottom:18px;
 
+box-shadow:
+0 4px 12px
+rgba(
+0,
+0,
+0,
+0.15
+);
+
 }
 
-button{
+.card h3{
 
-border:none;
-
-cursor:pointer;
+margin-bottom:8px;
 
 }
+
+.card p{
+
+color:#666;
+
+line-height:1.4;
+
+}
+
+/* ---------- BUTTON ---------- */
 
 .panel>button{
 
 width:100%;
 
 height:55px;
+
+border:none;
 
 border-radius:40px;
 
@@ -186,7 +239,13 @@ color:white;
 
 font-size:18px;
 
+font-weight:bold;
+
+cursor:pointer;
+
 }
+
+/* ---------- PROFILE ---------- */
 
 .profile{
 
@@ -196,15 +255,13 @@ text-align:center;
 
 .avatar{
 
-width:100px;
+width:95px;
 
-height:100px;
+height:95px;
 
 border-radius:50%;
 
 background:#0057b8;
-
-color:white;
 
 display:flex;
 
@@ -214,9 +271,13 @@ align-items:center;
 
 margin:auto;
 
+color:white;
+
 font-size:42px;
 
 }
+
+/* ---------- NAV ---------- */
 
 nav{
 
@@ -242,7 +303,7 @@ align-items:center;
 
 background:none;
 
-font-size:22px;
+border:none;
 
 display:flex;
 
@@ -250,9 +311,27 @@ flex-direction:column;
 
 align-items:center;
 
+font-size:22px;
+
+cursor:pointer;
+
+}
+
+.nav-btn span{
+
+font-size:13px;
+
+font-weight:bold;
+
 }
 
 .nav-btn.active{
+
+background:#e6ddff;
+
+padding:10px 18px;
+
+border-radius:20px;
 
 color:#0057b8;
 
