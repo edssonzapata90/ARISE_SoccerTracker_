@@ -1,4 +1,4 @@
-const API = "https://YOUR-RENDER-BACKEND.onrender.com";
+const API = "https://arise-soccertracker.onrender.com";
 
 async function signup() {
   const body = {
