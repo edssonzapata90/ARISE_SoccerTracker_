@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 import math
 
 from database import engine, get_db
-from SoccerTrackerBackend.models import Base, Player, TrainingSession, SensorData
-from SoccerTrackerBackend.schemas import PlayerCreate, SessionCreate, SensorDataCreate
+from models import Base, Player, TrainingSession, SensorData
+from schemas import PlayerCreate, SessionCreate, SensorDataCreate
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
