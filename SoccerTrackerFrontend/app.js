@@ -1,5 +1,4 @@
-const API =
-"https://arise-soccertracker.onrender.com";
+const API ="https://arise-soccertracker.onrender.com";
 
 function showPage(
 page,
