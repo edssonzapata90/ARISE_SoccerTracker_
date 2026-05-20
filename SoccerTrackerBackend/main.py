@@ -5,7 +5,7 @@ import math
 
 from database import engine, get_db
 from models import Base, Player, TrainingSession, SensorData
-from schemas import PlayerCreate, SessionCreate, SensorDataCreate
+from schemas import PlayerSignup, PlayerLogin, PlayerCreate, SessionCreate, SensorDataCreate
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -122,6 +122,60 @@ def home():
         "Smart Soccer Tracker backend running"
     }
 
+# -------------------------
+# Signup and Login
+# -------------------------
+
+@app.post("/signup")
+def signup(player: PlayerSignup, db: Session = Depends(get_db)):
+    existing_player = db.query(Player).filter(Player.email == player.email).first()
+
+    if existing_player:
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered"
+        )
+
+    new_player = Player(
+        name=player.name,
+        email=player.email,
+        password=player.password,
+        position=player.position,
+        dominant_foot=player.dominant_foot
+    )
+
+    db.add(new_player)
+    db.commit()
+    db.refresh(new_player)
+
+    return {
+        "message": "Account created successfully",
+        "player_id": new_player.id,
+        "name": new_player.name,
+        "email": new_player.email,
+        "position": new_player.position,
+        "dominant_foot": new_player.dominant_foot
+    }
+
+
+@app.post("/login")
+def login(player: PlayerLogin, db: Session = Depends(get_db)):
+    existing_player = db.query(Player).filter(Player.email == player.email).first()
+
+    if not existing_player or existing_player.password != player.password:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    return {
+        "message": "Login successful",
+        "player_id": existing_player.id,
+        "name": existing_player.name,
+        "email": existing_player.email,
+        "position": existing_player.position,
+        "dominant_foot": existing_player.dominant_foot
+    }
 
 # -------------------------
 # Players
