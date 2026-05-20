@@ -62,31 +62,39 @@ async function testBackend(){
 
 try{
 
-let r=
-await fetch(
-`${API}/`
-);
+await fetch(`${API}/`);
 
-let d=
-await r.json();
-
-document
-.getElementById(
+document.getElementById(
 "backend-status"
-)
-.innerText=
-d.message;
+).innerHTML=
+
+`
+<p>
+Ready for Training
+</p>
+
+<small>
+Tracker Connected
+</small>
+`;
 
 }
 
 catch{
 
-document
-.getElementById(
+document.getElementById(
 "backend-status"
-)
-.innerText=
-"Backend connection failed.";
+).innerHTML=
+
+`
+<p>
+Waiting for Tracker
+</p>
+
+<small>
+Connection Failed
+</small>
+`;
 
 }
 
