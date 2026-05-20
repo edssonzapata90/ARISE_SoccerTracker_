@@ -2,6 +2,18 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+class PlayerSignup(BaseModel):
+    name: str
+    email: str
+    password: str
+    position: Optional[str] = None
+    dominant_foot: Optional[str] = None
+
+
+class PlayerLogin(BaseModel):
+    email: str
+    password: str
+
 class PlayerCreate(BaseModel):
     name: str
     position: Optional[str] = None
