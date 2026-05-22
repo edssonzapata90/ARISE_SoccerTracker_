@@ -1,9 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# SQLite database file
 DATABASE_URL = "sqlite:///./soccer_tracker.db"
- 
+
 engine = create_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False}
@@ -17,7 +16,7 @@ SessionLocal = sessionmaker(
 
 Base = declarative_base()
 
-# Dependency for FastAPI routes
+
 def get_db():
     db = SessionLocal()
     try:
