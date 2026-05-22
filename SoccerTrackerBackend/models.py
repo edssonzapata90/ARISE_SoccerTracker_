@@ -23,39 +23,33 @@ class TrainingSession(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     player_id = Column(Integer, ForeignKey("players.id"), nullable=False)
-    session_time = Column(String, default="Training Session")
+    session_name = Column(String, default="Training Session")
     start_time = Column(DateTime, default=datetime.utcnow)
     end_time = Column(DateTime, nullable=True)
 
     player = relationship("Player", back_populates="sessions")
-    sensor_data = relationship("SensorData", back_populates="session")
+    tracker_data = relationship("TrackerData", back_populates="session")
 
 
-class SensorData(Base):
-    __tablename__ = "sensor_data"
+class TrackerData(Base):
+    __tablename__ = "tracker_data"
 
     id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey("players.id"), nullable=False)
     session_id = Column(Integer, ForeignKey("training_sessions.id"), nullable=False)
 
-    accel_x = Column(Float, nullable=False)
-    accel_y = Column(Float, nullable=False)
-    accel_z = Column(Float, nullable=False)
+    acceleration = Column(Float, default=0.0)
+    speed = Column(Float, default=0.0)
+    activity = Column(String, default="Standing")
 
-    gyro_x = Column(Float, nullable=False)
-    gyro_y = Column(Float, nullable=False)
-    gyro_z = Column(Float, nullable=False)
+    touches = Column(Integer, default=0)
+    dribbles = Column(Integer, default=0)
+    sprints = Column(Integer, default=0)
 
-    acceleration_magnitude = Column(Float, default=0.0)
-
-    speed_estimate = Column(Float, default=0.0)
     agility_score = Column(Float, default=0.0)
     foot_power_score = Column(Float, default=0.0)
-
-    touch_detected = Column(Integer, default=0)
-    first_touch_detected = Column(Integer, default=0)
-    dribble_detected = Column(Integer, default=0)
-    sprint_detected = Column(Integer, default=0)
+    first_touch_score = Column(Float, default=0.0)
 
     timestamp = Column(DateTime, default=datetime.utcnow)
 
-    session = relationship("TrainingSession", back_populates="sensor_data")
+    session = relationship("TrainingSession", back_populates="tracker_data")
