@@ -1,140 +1,35 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-import math
 
 from database import engine, get_db
-from models import Base, Player, TrainingSession, SensorData
-from schemas import PlayerSignup, PlayerLogin, PlayerCreate, SessionCreate, SensorDataCreate
+from models import Base, Player, TrainingSession, TrackerData
+from schemas import PlayerSignup, PlayerLogin, SessionCreate, TrackerDataCreate
 
-# Create database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(
-    title="Smart Soccer Tracker Backend",
-    version="1.0"
-)
+app = FastAPI(title="ARISE Soccer Tracker Backend")
 
-# -------------------------
-# CORS (Frontend Connection)
-# -------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://arise-soccer-tracker-dub9.vercel.app",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-# -------------------------
-# Metric Calculations
-# -------------------------
-def calculate_metrics(data):
-
-    acceleration_magnitude = math.sqrt(
-        data.accel_x ** 2 +
-        data.accel_y ** 2 +
-        data.accel_z ** 2
-    )
-
-    rotation_magnitude = math.sqrt(
-        data.gyro_x ** 2 +
-        data.gyro_y ** 2 +
-        data.gyro_z ** 2
-    )
-
-    speed_estimate = round(
-        acceleration_magnitude * 0.8,
-        2
-    )
-
-    agility_score = min(
-        round(rotation_magnitude * 10, 2),
-        100
-    )
-
-    foot_power_score = min(
-        round(acceleration_magnitude * 8, 2),
-        100
-    )
-
-    touch_detected = (
-        1 if acceleration_magnitude > 12
-        else 0
-    )
-
-    first_touch_detected = (
-        1 if acceleration_magnitude > 15
-        else 0
-    )
-
-    dribble_detected = (
-        1
-        if acceleration_magnitude > 10
-        and rotation_magnitude > 1.5
-        else 0
-    )
-
-    sprint_detected = (
-        1 if acceleration_magnitude > 18
-        else 0
-    )
-
-    return {
-        "acceleration_magnitude":
-            round(acceleration_magnitude, 2),
-
-        "speed_estimate":
-            speed_estimate,
-
-        "agility_score":
-            agility_score,
-
-        "foot_power_score":
-            foot_power_score,
-
-        "touch_detected":
-            touch_detected,
-
-        "first_touch_detected":
-            first_touch_detected,
-
-        "dribble_detected":
-            dribble_detected,
-
-        "sprint_detected":
-            sprint_detected,
-    }
-
-
-# -------------------------
-# Root
-# -------------------------
 @app.get("/")
 def home():
-    return {
-        "message":
-        "Smart Soccer Tracker backend running"
-    }
+    return {"message": "ARISE backend running"}
 
-# -------------------------
-# Signup and Login
-# -------------------------
 
 @app.post("/signup")
 def signup(player: PlayerSignup, db: Session = Depends(get_db)):
-    existing_player = db.query(Player).filter(Player.email == player.email).first()
+    existing = db.query(Player).filter(Player.email == player.email).first()
 
-    if existing_player:
-        raise HTTPException(
-            status_code=400,
-            detail="Email already registered"
-        )
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already exists")
 
     new_player = Player(
         name=player.name,
@@ -149,7 +44,7 @@ def signup(player: PlayerSignup, db: Session = Depends(get_db)):
     db.refresh(new_player)
 
     return {
-        "message": "Account created successfully",
+        "message": "Account created",
         "player_id": new_player.id,
         "name": new_player.name,
         "email": new_player.email,
@@ -160,75 +55,32 @@ def signup(player: PlayerSignup, db: Session = Depends(get_db)):
 
 @app.post("/login")
 def login(player: PlayerLogin, db: Session = Depends(get_db)):
-    existing_player = db.query(Player).filter(Player.email == player.email).first()
+    existing = db.query(Player).filter(Player.email == player.email).first()
 
-    if not existing_player or existing_player.password != player.password:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
-        )
+    if not existing or existing.password != player.password:
+        raise HTTPException(status_code=401, detail="Invalid login")
 
     return {
         "message": "Login successful",
-        "player_id": existing_player.id,
-        "name": existing_player.name,
-        "email": existing_player.email,
-        "position": existing_player.position,
-        "dominant_foot": existing_player.dominant_foot
+        "player_id": existing.id,
+        "name": existing.name,
+        "email": existing.email,
+        "position": existing.position,
+        "dominant_foot": existing.dominant_foot
     }
-
-# -------------------------
-# Players
-# -------------------------
-@app.post("/players")
-def create_player(
-    player: PlayerCreate,
-    db: Session = Depends(get_db)
-):
-
-    new_player = Player(
-        name=player.name,
-        position=player.position,
-        dominant_foot=player.dominant_foot
-    )
-
-    db.add(new_player)
-    db.commit()
-    db.refresh(new_player)
-
-    return new_player
 
 
 @app.get("/players")
-def get_players(
-    db: Session = Depends(get_db)
-):
+def get_players(db: Session = Depends(get_db)):
     return db.query(Player).all()
 
 
-# -------------------------
-# Sessions
-# -------------------------
 @app.post("/sessions")
-def create_session(
-    session: SessionCreate,
-    db: Session = Depends(get_db)
-):
-
-    player = (
-        db.query(Player)
-        .filter(
-            Player.id ==
-            session.player_id
-        )
-        .first()
-    )
+def create_session(session: SessionCreate, db: Session = Depends(get_db)):
+    player = db.query(Player).filter(Player.id == session.player_id).first()
 
     if not player:
-        raise HTTPException(
-            status_code=404,
-            detail="Player not found"
-        )
+        raise HTTPException(status_code=404, detail="Player not found")
 
     new_session = TrainingSession(
         player_id=session.player_id,
@@ -239,85 +91,69 @@ def create_session(
     db.commit()
     db.refresh(new_session)
 
-    return {
-        "message":
-            "Session created",
-
-        "session":
-            new_session
-    }
+    return new_session
 
 
 @app.get("/sessions")
-def get_sessions(
-    db: Session = Depends(get_db)
-):
-    return db.query(
-        TrainingSession
-    ).all()
+def get_sessions(db: Session = Depends(get_db)):
+    return db.query(TrainingSession).all()
 
 
-# -------------------------
-# Sensor Data
-# -------------------------
-@app.post("/sensor-data")
-def receive_sensor_data(
-    data: SensorDataCreate,
-    db: Session = Depends(get_db)
-):
+def calculate_soccer_metrics(acceleration: float, speed: float, activity: str):
+    touches = 0
+    dribbles = 0
+    sprints = 0
 
-    metrics = calculate_metrics(data)
+    if activity in ["Walking", "Jogging"]:
+        touches = 1
 
-    new_data = SensorData(
+    if activity == "Jogging":
+        dribbles = 1
+
+    if activity == "Sprint":
+        sprints = 1
+
+    agility_score = min(acceleration * 18, 100)
+    foot_power_score = min(acceleration * 15, 100)
+    first_touch_score = min(speed * 12, 100)
+
+    return {
+        "touches": touches,
+        "dribbles": dribbles,
+        "sprints": sprints,
+        "agility_score": round(agility_score, 2),
+        "foot_power_score": round(foot_power_score, 2),
+        "first_touch_score": round(first_touch_score, 2)
+    }
+
+
+@app.post("/tracker-data")
+def receive_tracker_data(data: TrackerDataCreate, db: Session = Depends(get_db)):
+    session = db.query(TrainingSession).filter(
+        TrainingSession.id == data.session_id
+    ).first()
+
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    metrics = calculate_soccer_metrics(
+        data.acceleration,
+        data.speed,
+        data.activity
+    )
+
+    new_data = TrackerData(
+        player_id=data.player_id,
         session_id=data.session_id,
-
-        accel_x=data.accel_x,
-        accel_y=data.accel_y,
-        accel_z=data.accel_z,
-
-        gyro_x=data.gyro_x,
-        gyro_y=data.gyro_y,
-        gyro_z=data.gyro_z,
-
-        acceleration_magnitude=
-            metrics[
-                "acceleration_magnitude"
-            ],
-
-        speed_estimate=
-            metrics[
-                "speed_estimate"
-            ],
-
-        agility_score=
-            metrics[
-                "agility_score"
-            ],
-
-        foot_power_score=
-            metrics[
-                "foot_power_score"
-            ],
-
-        touch_detected=
-            metrics[
-                "touch_detected"
-            ],
-
-        first_touch_detected=
-            metrics[
-                "first_touch_detected"
-            ],
-
-        dribble_detected=
-            metrics[
-                "dribble_detected"
-            ],
-
-        sprint_detected=
-            metrics[
-                "sprint_detected"
-            ],
+        acceleration=data.acceleration,
+        speed=data.speed,
+        activity=data.activity,
+        touches=metrics["touches"],
+        dribbles=metrics["dribbles"],
+        sprints=metrics["sprints"],
+        agility_score=metrics["agility_score"],
+        foot_power_score=metrics["foot_power_score"],
+        first_touch_score=metrics["first_touch_score"]
     )
 
     db.add(new_data)
@@ -325,82 +161,50 @@ def receive_sensor_data(
     db.refresh(new_data)
 
     return {
-        "message":
-            "Sensor saved",
-
-        "metrics":
-            metrics
+        "message": "Tracker data saved",
+        "data": new_data
     }
 
 
-@app.get("/sensor-data")
-def get_sensor_data(
-    db: Session = Depends(get_db)
-):
-    return db.query(
-        SensorData
+@app.get("/tracker-data")
+def get_tracker_data(db: Session = Depends(get_db)):
+    return db.query(TrackerData).all()
+
+
+@app.get("/sessions/{session_id}/summary")
+def session_summary(session_id: int, db: Session = Depends(get_db)):
+    records = db.query(TrackerData).filter(
+        TrackerData.session_id == session_id
     ).all()
-
-
-# -------------------------
-# Session Summary
-# -------------------------
-@app.get(
-"/sessions/{session_id}/summary"
-)
-def session_summary(
-    session_id: int,
-    db: Session = Depends(get_db)
-):
-
-    records = (
-        db.query(
-            SensorData
-        )
-        .filter(
-            SensorData.session_id ==
-            session_id
-        )
-        .all()
-    )
 
     if not records:
         return {
-            "message":
-            "No data"
+            "message": "No tracker data found",
+            "session_id": session_id
         }
 
+    total_touches = sum(r.touches for r in records)
+    total_dribbles = sum(r.dribbles for r in records)
+    total_sprints = sum(r.sprints for r in records)
+
+    avg_speed = sum(r.speed for r in records) / len(records)
+    avg_acceleration = sum(r.acceleration for r in records) / len(records)
+    avg_agility = sum(r.agility_score for r in records) / len(records)
+    avg_power = sum(r.foot_power_score for r in records) / len(records)
+    avg_first_touch = sum(r.first_touch_score for r in records) / len(records)
+
+    latest_activity = records[-1].activity
+
     return {
-
-        "session_id":
-            session_id,
-
-        "touches":
-            sum(
-                r.touch_detected
-                for r in records
-            ),
-
-        "dribbles":
-            sum(
-                r.dribble_detected
-                for r in records
-            ),
-
-        "sprints":
-            sum(
-                r.sprint_detected
-                for r in records
-            ),
-
-        "average_speed":
-            round(
-                sum(
-                    r.speed_estimate
-                    for r in records
-                )
-                /
-                len(records),
-                2
-            ),
+        "session_id": session_id,
+        "total_records": len(records),
+        "total_touches": total_touches,
+        "total_dribbles": total_dribbles,
+        "total_sprints": total_sprints,
+        "average_speed": round(avg_speed, 2),
+        "average_acceleration": round(avg_acceleration, 2),
+        "average_agility_score": round(avg_agility, 2),
+        "average_foot_power_score": round(avg_power, 2),
+        "average_first_touch_score": round(avg_first_touch, 2),
+        "latest_activity": latest_activity
     }
